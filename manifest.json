@@ -7,6 +7,13 @@
   "orientation": "portrait",
   "Scope": "/",
   "start_url": "/",
-  "icons": null,
-  "splash_pages": null
+  "splash_pages": null,
+  "icons": [
+    {
+      "src" : "/images/mu.png",
+      "type": "image/png",
+      "size" : "512x512"
+    }
+  ]
+  
 }
