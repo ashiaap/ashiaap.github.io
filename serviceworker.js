@@ -11,8 +11,20 @@ var urlToCache = [
     '/images/bg-01/jpg',
     '/js/jquery.min.js',
     '/js/main.js',
-    '/vendor/',
-    'index.html',
+    '/vendor/bootstrap/css/bootstrap.min.css',
+    '/vendor/animate/animate.css',
+    '/vendor/css-hamburgers/hamburgers.min.css',
+    '/vendor/animsition/css/animsition.min.css',
+    '/vendor/select2/select2.min.css',
+    '/vendor/daterangepicker/daterangepicker.css',
+    '/vendor/jquery/jquery-3.2.1.min.js',
+    '/vendor/animsition/js/animsition.min.js',
+    '/vendor/bootstrap/js/popper.js',
+    '/vendor/bootstrap/js/bootstrap.min.js',
+    '/vendor/select2/select2.min.js',
+    '/vendor/daterangepicker/moment.min.js',
+    '/vendor/daterangepicker/daterangepicker.js',
+    '/vendor/countdowntime/countdowntime.js'
 
 
 ]
