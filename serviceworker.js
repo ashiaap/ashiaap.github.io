@@ -1,16 +1,15 @@
-var CACHE_NAME = 'my-pwa-cache-v1';
+var CACHE_NAME = 'latihan-pwa-cache-v1';
 
 var urlToCache = [
     '/',
     '/css/main.css',
     '/css/util.css',
-    '/fonts/font-awesome-4.7.0',
-    '/fonts/iconic',
-    '/fonts/poppins',
+    '/images/bg-01.jpg',    
+    '/images/icons/icon-google.png',
+    '/images/icons/map-marker.png',
     '/images/icons/favicon.ico',
-    '/images/bg-01/jpg',
+    '/js/map-custom.js',
     '/js/jquery.min.js',
-    '/js/main.js',
     '/vendor/bootstrap/css/bootstrap.min.css',
     '/vendor/animate/animate.css',
     '/vendor/css-hamburgers/hamburgers.min.css',
@@ -24,27 +23,32 @@ var urlToCache = [
     '/vendor/select2/select2.min.js',
     '/vendor/daterangepicker/moment.min.js',
     '/vendor/daterangepicker/daterangepicker.js',
-    '/vendor/countdowntime/countdowntime.js'
+    '/vendor/countdowntime/countdowntime.js',
+    '/manifest.json',
+    '/js/main.js'
+];
 
-
-]
-
-//install service worker
+// install cache on browser
 self.addEventListener('install', function(event){
+    //do install
     event.waitUntil(
-        caches.open(CACHE_NAME).then(function(cache){
-                console.log('service worker do install..',cache);
+        caches.open(CACHE_NAME).then(
+            function(cache){
+                //cek apakah cache sudah terinstall
+                console.log("service worker do install . .");
                 return cache.addAll(urlToCache);
-            })
+            }
+        )
     );
+    self.skipWaiting();
 });
 
-//aktivasi cache
-self.addEventListener('activate',function(event){
+//aktivasi service worker
+self.addEventListener('activate', function(event){
     event.waitUntil(
         caches.keys().then(function(cacheName){
             return Promise.all(
-                //delete cache jika da versi yang lebih baru
+                //jika sudah ada cache dengan versi beda maka di hapus
                 cacheName.filter(function(cacheName){
                     return cacheName !== CACHE_NAME;
                 }).map(function(cacheName){
@@ -53,14 +57,42 @@ self.addEventListener('activate',function(event){
             );
         })
     );
+    if(self.clients && clients.claim){
+        clients.claim();
+    }
 });
 
-if(navigator.serviceWorker){
-    window.addEventListener('load', function(){
-        navigator.serviceWorker.register('/serviceworker.js').then(function(reg){
-            console.log('SW regis sukses dgn skop', reg.scope);
-        }, function(err){
-            console.log("SW regis failed", err);
-        });
-    });
-}
+//fetch cache
+self.addEventListener('fetch', function(event){
+    var request = event.request;
+    var url = new URL(request.url);
+
+    /**
+     * menggunakan data local cache
+     */
+
+     if(url.origin === location.origin){
+         event.respondWith(
+             caches.match(request).then(function(response){
+                 //jika ada data di caache, maka tampilkan data cache, jika tidak maka petch request
+                 return response || fetch(request);
+             })
+         )
+     }else{
+         //internet API
+         event.respondWith(
+             caches.open('mahasiswa-cache-v1').then(function(cache){
+                 return fetch(request).then(function(liveRequest){
+                     cache.put(request, liveRequest.clone());
+                     //save cache to mahasiswa-cache-v1
+                     return liveRequest;
+                 }).catch(function(){
+                     return caches.match(request).then(function(response){
+                         if(response) return response;
+                         return caches.match('/fallback.json');
+                     })
+                 })
+             })
+         )
+     }
+});
