@@ -8,6 +8,7 @@ var urlToCache = [
     '/images/icons/icon-google.png',
     '/images/icons/map-marker.png',
     '/images/icons/favicon.ico',
+  
     '/js/map-custom.js',
     '/js/jquery.min.js',
     '/vendor/bootstrap/css/bootstrap.min.css',
