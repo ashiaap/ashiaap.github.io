@@ -1,9 +1,10 @@
 {
-  "name": "Login",
-  "short_name": "Login",
+  "name": "Mu",
+  "short_name": "Mu",
   "theme_color": "#2196f3",
   "background_color": "#2196f3",
   "display": "fullscreen",
+  "orientation": "portrait",
   "Scope": "/",
   "start_url": "/",
   "icons": [
